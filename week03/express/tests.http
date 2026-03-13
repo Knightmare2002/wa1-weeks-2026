@@ -1,0 +1,29 @@
+GET http://localhost:3000/
+
+###
+
+GET http://localhost:3000/user
+
+### 
+
+GET http://localhost:3000/info?user=1&model=full
+
+
+###
+
+POST http://localhost:3000/newuser
+Content-Type: application/json
+
+{
+    "name": "Fulvio",
+    "id": 42,
+    "email": "nobody@gmail.com"
+}
+
+###
+
+GET http://localhost:3000/user/42/address
+
+###
+
+GET http://localhost:3000/users
