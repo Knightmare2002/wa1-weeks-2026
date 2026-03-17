@@ -19,7 +19,7 @@ function getUsers() {
  */
 function getQuestions() {
     return new Promise( (resolve, reject) => {
-        const sql = 'SELECTss id, text, authorId, date FROM question' ;
+        const sql = 'SELECT id, text, authorId, date FROM question' ;
         db.all(sql, (err, rows) => {
             if(err) {
                 reject(err)
