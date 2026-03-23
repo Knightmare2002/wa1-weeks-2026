@@ -1,0 +1,58 @@
+### Recupera tutti i film
+GET http://localhost:3000/api/films HTTP/1.1
+
+### Recupera solo i film preferiti
+GET http://localhost:3000/api/films?filter=favorite HTTP/1.1
+
+### Recupera solo i film con il massimo punteggio
+GET http://localhost:3000/api/films?filter=bestRated HTTP/1.1
+
+### Recupera i film visti nell'ultimo mese
+GET http://localhost:3000/api/films?filter=lastMonth HTTP/1.1
+
+### Recupera i film che non sono ancora stati visti
+GET http://localhost:3000/api/films?filter=Unseen HTTP/1.1
+
+### Recupera un film specificandone l'ID
+GET http://localhost:3000/api/films/4 HTTP/1.1
+
+### Crea un nuovo film (POST)
+POST http://localhost:3000/api/films HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "Il Signore degli Anelli",
+    "favorite": true,
+    "rating": 4,
+    "watchDate": "2026-03-24"
+}
+
+### Aggiorna un film dato il suo ID
+PUT http://localhost:3000/api/films/2 HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "Transformers",
+    "favorite": true,
+    "rating": 5,
+    "watchDate": "2007-10-11"
+}
+
+### Aggiorna il rating di un film dato il suo ID
+PUT http://localhost:3000/api/films/1/rating HTTP/1.1
+Content-Type: application/json
+
+{
+    "rating": 3
+}
+
+### Aggiorna lo stato di preferito di un film dato il suo ID
+PUT http://localhost:3000/api/films/1/favorite HTTP/1.1
+Content-Type: application/json
+
+{
+    "favorite": false
+}
+
+### Elimina un film dato il suo ID
+DELETE http://localhost:3000/api/films/4 HTTP/1.1

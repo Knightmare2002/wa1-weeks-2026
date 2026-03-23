@@ -1,0 +1,12 @@
+{
+  "name": "lab03",
+  "version": "1.0.0",
+  "description": "**Description**  \r Retrieves the list of all the available films in the database.",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
