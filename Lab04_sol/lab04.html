@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Author" content="Samuele Caruso">
+
+        <title>Film Library</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    </head>
+
+    <body>
+        <header>
+            <nav class="navbar navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand text-white" href="#">
+                        <i class="bi bi-film d-inline-block align-text-top fs-4 text-white me-2"></i>
+                        Film Library
+                    </a>
+
+                    <div class="d-flex align-items-center">
+                        
+                        <form class="d-none d-md-flex me-3" role="search" >
+                            <input class="form-control" type="search" placeholder="Search..." aria-label="Search">
+                        </form>
+
+                        <a href="#" class="text-white" title="Profilo Utente">
+                            <i class="bi bi-person-circle fs-3"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container-fluid px-0"> <!--mt-4 lascerebbe un pò di spazio in alto per staccarlo dalla barra di ricerca--> <!--px-0 vuol dire che leviamo il padding sull'asse orizzontale.-->
+            <div class="row g-0 vh-100"> <!--g-0 Sta per Gutters Zero. Questo è il comando fondamentale che dice a Bootstrap di non mettere nessuno spazio vuoto tra la colonna di sinistra e quella di destra.-->
+                
+                <aside class="col-md-4 d-none d-md-block">
+                    <div class="bg-light p-3 border-end h-100"> <!---Invece di avere un bordo su tutti e 4 i lati, ho detto alla colonna di sinistra di disegnare una riga solo sul suo lato finale (a destra). In questo modo creiamo una bellissima linea divisoria singola tra le due aree! Ho anche aggiunto h-100 per assicurarmi che i due sfondi prendano tutta l'altezza disponibile.-->
+                        <h2>Filters</h2>
+                        <ul class="list-unstyled mt-3 d-grid gap-2">
+                            
+                            <li>
+                                <button class="btn btn-primary w-100 text-start">
+                                    All
+                                </button>
+                            </li>
+                            
+                            <li>
+                                <button class="btn btn-light w-100 text-start">
+                                    Favorites
+                                </button>
+                            </li>
+                            
+                            <li>
+                                <button class="btn btn-light w-100 text-start">
+                                    Best Rated
+                                </button>
+                            </li>
+                            
+                            <li>
+                                <button class="btn btn-light w-100 text-start">
+                                    Seen Last Month
+                                </button>
+                            </li>
+                            
+                            <li>
+                                <button class="btn btn-light w-100 text-start">
+                                    Unseen
+                                </button>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </aside>
+
+                <section class="col-md-8 position-relative">
+                    <div class="border p-3 h-100"> <!--border p-3 rounded avrebbe arrotondato e staccato le due colonne principali-->
+                        <h1>All Films</h1>
+                        <div class="table-responsive">
+                                    <table class="table">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col">Favorite</th>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Watch Date</th>
+                                                <th scope="col">Rating</th>
+                                                <th scope="col" class="text-end">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><i class="bi bi-heart-fill text-danger"></i></td>
+                                                <td class="text-primary">Pulp Fiction</td>
+                                                <td>March 10, 2026</td>
+                                                <td>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                </td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-primary btn-sm">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td><i class="bi bi-heart"></i></td>
+                                                <td>21 Grams</td>
+                                                <td>March 17, 2026</td>
+                                                <td>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                </td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-primary btn-sm">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger btn-sm">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><i class="bi bi-heart"></i></td>
+                                                <td>Star Wars</td>
+                                                <td></td> <td>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                </td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></button>
+                                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><i class="bi bi-heart"></i></td>
+                                                <td>Matrix</td>
+                                                <td></td> <td>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                    <i class="bi bi-star text-warning"></i>
+                                                </td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></button>
+                                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><i class="bi bi-heart-fill text-danger"></i></td>
+                                                <td>Shrek 2</td>
+                                                <td>March 21, 2026</td>
+                                                <td>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                    <i class="bi bi-star-fill text-warning"></i>
+                                                </td>
+                                                <td class="text-end">
+                                                    <button class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></button>
+                                                    <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                    <button class="btn btn-primary rounded-circle fs-4 shadow position-absolute bottom-0 end-0 m-4">
+                                            <i class="bi bi-plus"></i>
+                                    </button>
+                        </div>
+                    </div>
+                        
+                </section>
+
+            </div>
+        </main>
+
+        <footer>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

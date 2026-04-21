@@ -1,0 +1,17 @@
+/* Questo colorerà di rosso il cuore pieno */
+.bi-heart-fill {
+    color: #dc3545; /* Questo è il codice esadecimale del rosso "danger" di Bootstrap */
+}
+
+/* Questo colorerà di giallo le stelle piene */
+.bi-star-fill {
+    color: #f0ad4e; /* Codice esadecimale per un bel giallo scuro/arancio */
+}
+
+/* Add film button */
+.fixed-right-bottom {
+    position: fixed; /* Lo scollega dalla griglia e lo fissa rispetto allo schermo */
+    right: 1.5rem;   /* Lo distanzia dal bordo destro */
+    bottom: 1.5rem;  /* Lo distanzia dal bordo inferiore */
+    z-index: 10;     /* Assicura che stia SEMPRE "sopra" gli altri elementi se si sovrappongono */
+}
