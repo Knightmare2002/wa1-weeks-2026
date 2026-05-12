@@ -3,12 +3,15 @@ import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
 function AddFilmForm(props) {
-  const [filmData, setFilmData] = useState({
-    title: '',
-    favorite: false,
-    watchDate: '',
-    rating: ''
-  });
+  
+  const [filmData, setFilmData] = useState(() => ({
+    title: props.filmToEdit ? props.filmToEdit.title : '',
+    favorite: props.filmToEdit ? props.filmToEdit.favorite : false,
+    watchDate: props.filmToEdit && props.filmToEdit.watchDate
+      ? props.filmToEdit.watchDate.format('YYYY-MM-DD')
+      : '',
+    rating: props.filmToEdit && props.filmToEdit.rating != null ? props.filmToEdit.rating : ''
+  }));
 
   const [errMsg, setErrMsg] = useState('');
 
@@ -41,14 +44,15 @@ function AddFilmForm(props) {
 
     setErrMsg('');
 
-    const newFilm = {
+    const filmToSave = {
+      ...props.filmToEdit,
       title: filmData.title.trim(),
       favorite: filmData.favorite,
       watchDate: filmData.watchDate ? dayjs(filmData.watchDate) : null,
       rating: filmData.rating === '' ? null : Number(filmData.rating)
     };
 
-    props.onSave(newFilm);
+    props.onSave(filmToSave);
   };
 
   return (

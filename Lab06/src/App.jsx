@@ -38,7 +38,31 @@ function getFilteredFilms(films, selectedFilter) {
 
 function App(){
     const handleSaveFilm = (film) => {
-      const newId = films.at(-1).id + 1;
+
+      //EDIT
+      if (filmToEdit) {
+        setFilms(oldFilms =>
+          oldFilms.map((f) =>
+            f.ID === filmToEdit.ID
+              ? new Film(
+                  filmToEdit.ID,
+                  film.title,
+                  film.favorite,
+                  film.watchDate,
+                  film.rating,
+                  1
+                )
+              : f
+          )
+        );
+
+        setEditingFilm(null);
+        setShowForm(false);
+        return;
+      }
+
+      //ADD
+      const newId = films.at(-1).ID + 1;
 
       const newFilm = new Film(
         newId,
@@ -53,6 +77,18 @@ function App(){
       setShowForm(false);
     };
 
+    const handleEditFilm = (film) => {
+      setEditingFilm(film);
+      setShowForm(true);
+    };
+
+    const handleDeleteFilm = (film) => {
+      setFilms((oldFilms) => {
+        return oldFilms.filter((f) => {return f.ID !== film.ID})
+      })
+    };
+
+
     const initialFilms = []
     initialFilms.push(new Film(1, "Transformers", true, dayjs("11-10-2007", "DD-MM-YYYY"), 5, 1))
     initialFilms.push(new Film(2, "Transformers 2", false, dayjs("11-10-2009", "DD-MM-YYYY"), 3, 1))
@@ -66,6 +102,10 @@ function App(){
     const visibleFilms = getFilteredFilms(films, selectedFilter)
 
     const [showForm, setShowForm] = useState(false)
+
+    const [filmToEdit, setEditingFilm] = useState(null)
+
+    const [filmToDelete, setFilmToDelete] = useState(null)
     
     return (
         <>
@@ -84,7 +124,11 @@ function App(){
                       films={visibleFilms}
                       onShowForm={setShowForm}
                       showForm={showForm}
-                      onSave={handleSaveFilm}/>
+                      onSave={handleSaveFilm}
+                      onEditFilm={handleEditFilm}
+                      editingFilm={filmToEdit}
+                      onDelete={handleDeleteFilm}
+                      />
                 </Col>
             </Row>
             

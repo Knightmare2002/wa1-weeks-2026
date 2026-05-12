@@ -1,5 +1,6 @@
 import { Button, Container, Row, Table } from "react-bootstrap";
 import AddFilmForm from "./addFilmForm";
+import { useState } from "react";
 
 
 
@@ -22,14 +23,17 @@ function TableRow(props){
             <td>
                 <div className="d-flex gap-1">
                     <Button 
-                    variant="warning" 
-                    style={{border:'none'}}
-                    onClick={() => props.onShowForm(true)}>
-                        <i className="bi bi-pencil" style={{color:'black'}}></i>
+                        variant="warning" 
+                        style={{border:'none'}}
+                        onClick={() => props.onEditFilm(film)}>
+                            <i className="bi bi-pencil" style={{color:'black'}}></i>
                     </Button>
 
-                    <Button variant="danger" style={{border:'none'}}>
-                        <i className="bi bi-trash" style={{color:'black'}}></i>
+                    <Button 
+                        variant="danger" 
+                        style={{border:'none'}}
+                        onClick={() => props.onDelete(film)}>
+                            <i className="bi bi-trash" style={{color:'black'}}></i>
                     </Button>
                 </div>
             </td>
@@ -38,20 +42,21 @@ function TableRow(props){
 }
 
 function FilmTable(props){
-    const films = props.films
+        const films = props.films
     return (
         <>
             <Table>
                 <tbody>
-                    {films.map((film) => <TableRow key={film.ID} film={film} onShowForm={props.onShowForm}/>)}
+                    {films.map((film) => <TableRow key={film.ID} film={film} onEditFilm={props.onEditFilm} onDelete={props.onDelete}/>)}
                 </tbody>
             </Table>
             {!props.showForm ? (
-                <Button className="position-absolute bottom-0 end-0 m-4 shadow rounded-circle" onClick={() => props.onShowForm(true)}>
+                <Button className="position-absolute bottom-0 end-0 m-4 shadow rounded-circle" onClick={() => {props.onShowForm(true); props.onEditFilm(null)}}>
                     <i className="bi bi-plus fs-6"></i>
                 </Button>
             ) : (
-                <AddFilmForm 
+                <AddFilmForm
+                    filmToEdit={props.editingFilm} 
                     onCancel={() => props.onShowForm(false)}
                     onSave={props.onSave}
                     />
