@@ -1,4 +1,5 @@
-import { Col, Container, ListGroup } from "react-bootstrap"
+import { Container, ListGroup } from "react-bootstrap"
+import { NavLink } from "react-router"
 
 function Sidebar(props){
     const filtersList = props.filters
@@ -10,12 +11,17 @@ function Sidebar(props){
                 <ListGroup>
                     {filtersList.map((f) => (
                     <ListGroup.Item
-                        key={f}
+                        key={f.path}
+                        as={NavLink}
+                        to={f.path === "all" ? "/app" : `/app/filter/${f.path}`}
+                        end={f.path === 'all'}
                         action
-                        active={props.selectedFilter === f}
-                        onClick={() => props.onSelectedFilter(f)}
+                        // Non abbiamo più bisogno della logica state-based in quanto ora la truth arriva direttamente dall'URL (logica Router-based)
+                         
+                        //active={props.selectedFilter === f}
+                        //onClick={() => props.onSelectedFilter(f)}
                     >
-                        {f}
+                        {f.label}
                     </ListGroup.Item>
                     ))}
                 </ListGroup>

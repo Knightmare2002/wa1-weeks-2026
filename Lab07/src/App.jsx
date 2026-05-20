@@ -1,7 +1,7 @@
 import { Film } from '../../Lab03/entities'
 
 import { useState } from 'react'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
@@ -10,27 +10,30 @@ dayjs.extend(customParseFormat)
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
 import FilmTable from './components/FilmTable'
+import LoginPage from './components/LoginPage'
+import UserContext from '../../week08/qa-client/src/contexts/UserContext'
+import { Outlet, Route, Routes, useParams } from 'react-router-dom'
 
 function getFilteredFilms(films, selectedFilter) {
   const today = dayjs()
   switch (selectedFilter) {
-    case 'Favorites':
+    case 'favorites':
       return films.filter((film) => film.favorite === true);
 
-    case 'Best Rated':
+    case 'best-rated':
       return films.filter((film) => film.rating === 5);
 
-    case 'Seen Last Month': {
+    case 'seen-last-month': {
       const thirtyDaysAgo = dayjs().subtract(30, 'day');
       return films.filter((film) =>
         film.watchDate && film.watchDate.isAfter(thirtyDaysAgo) && film.watchDate.isBefore(today)
       );
     }
 
-    case 'Unseen':
+    case 'unseen':
       return films.filter((film) => !film.watchDate);
 
-    case 'All':
+    case 'all':
     default:
       return films;
   }
@@ -94,47 +97,128 @@ function App(){
     initialFilms.push(new Film(2, "Transformers 2", false, dayjs("11-10-2009", "DD-MM-YYYY"), 3, 1))
     initialFilms.push(new Film(3, "Transformers 3", false, null, null, 1))
 
-    const filters = ["All", "Favorites", "Best Rated", "Seen Last Month", "Unseen"]
-    const [selectedFilter, setSelectedFilter] = useState('All')
+    const filters = [
+      {label: 'All', path: 'all'},
+      {label: 'Favorites', path: 'favorites'},
+      {label: 'Best Rated', path: 'best-rated'},
+      {label: 'Seen Last Month', path: 'seen-last-month'},
+      {label: 'Unseen', path: 'unseen'}
+    ]
+    //const [selectedFilter, setSelectedFilter] = useState('All') Logica state-based
 
     const [films, setFilms] = useState(initialFilms)
 
-    const visibleFilms = getFilteredFilms(films, selectedFilter)
+    //const visibleFilms = getFilteredFilms(films, selectedFilter) Logica state-based
 
     const [showForm, setShowForm] = useState(false)
 
     const [filmToEdit, setEditingFilm] = useState(null)
 
-    const [filmToDelete, setFilmToDelete] = useState(null)
+    const user = {name: 'Guest'}
     
     return (
-        <>
-            <Header></Header>
+      <UserContext.Provider value={user}>
+        <Routes>
+          <Route path='/' element={<LoginPage />} />
 
-            <Row className='flex-grow-1'>
-                <Col xs={4} style={{background:"lightgray"}}>
-                    <Sidebar 
-                        filters={filters} 
-                        selectedFilter={selectedFilter} 
-                        onSelectedFilter={setSelectedFilter}/>
-                </Col>
+          <Route path='/app' element={<MainLayout filters={filters} />}>
+            <Route
+              index
+              element={
+                <HomePage
+                  visibleFilms={getFilteredFilms(films, 'all')}
+                  setShowForm={setShowForm}
+                  showForm={showForm}
+                  handleSaveFilm={handleSaveFilm}
+                  handleDeleteFilm={handleDeleteFilm}
+                  handleEditFilm={handleEditFilm}
+                  filmToEdit={filmToEdit}
+                />
+              }
+            />
 
-                <Col className='position-relative'>
-                    <FilmTable 
-                      films={visibleFilms}
-                      onShowForm={setShowForm}
-                      showForm={showForm}
-                      onSave={handleSaveFilm}
-                      onEditFilm={handleEditFilm}
-                      editingFilm={filmToEdit}
-                      onDelete={handleDeleteFilm}
-                      />
-                </Col>
-            </Row>
-            
-            
-        </>
+            <Route
+              path='filter/:filterName'
+              element={
+                <FilterPage
+                  films={films}
+                  setShowForm={setShowForm}
+                  showForm={showForm}
+                  handleSaveFilm={handleSaveFilm}
+                  handleDeleteFilm={handleDeleteFilm}
+                  handleEditFilm={handleEditFilm}
+                  filmToEdit={filmToEdit}
+                />
+              }
+            />
+          </Route>
+
+          <Route path='*' element={<NotFoundPage />} />
+        </Routes>
+      </UserContext.Provider>
     )
 }
+
+function HomePage(props){
+  return(
+    <FilmTable 
+      films={props.visibleFilms}
+      onShowForm={props.setShowForm}
+      showForm={props.showForm}
+      onSave={props.handleSaveFilm}
+      onEditFilm={props.handleEditFilm}
+      editingFilm={props.filmToEdit}
+      onDelete={props.handleDeleteFilm}
+      />
+  )
+}
+
+function MainLayout(props){
+  return (
+    <>
+      <Header/>
+
+      <Row className='flex-grow-1'>
+        <Col xs={4} style={{background:"lightgray"}}>
+          <Sidebar 
+            filters={props.filters}/>
+        </Col>
+
+        <Col className='position-relative'>
+          <Outlet/>
+        </Col>
+      </Row>
+    </>
+  )
+}
+
+//Possiamo sostituire HomePage direttamente con questa funzione volendo
+function FilterPage(props){
+  const { filterName } = useParams()
+
+  const visibleFilms = getFilteredFilms(props.films, filterName)
+
+  return(
+    <FilmTable 
+      films={visibleFilms}
+      onShowForm={props.setShowForm}
+      showForm={props.showForm}
+      onSave={props.handleSaveFilm}
+      onEditFilm={props.handleEditFilm}
+      editingFilm={props.filmToEdit}
+      onDelete={props.handleDeleteFilm}
+      />
+  )
+}
+
+function NotFoundPage(){
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center" style={{ minHeight: '70vh' }}>
+      <h2>Page not found</h2>
+      <p>The requested URL is not valid.</p>
+    </div>
+  )
+}
+
 export default App
 
