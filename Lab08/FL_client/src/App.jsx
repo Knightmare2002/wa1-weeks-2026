@@ -1,4 +1,4 @@
-import { Film } from '../../Lab03/entities'
+import { Film } from '../../FL_server/entities'
 
 import { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
