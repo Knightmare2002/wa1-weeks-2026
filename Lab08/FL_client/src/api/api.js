@@ -11,4 +11,4 @@ async function getFilms(filter){
     throw new Error('Errore nel caricamento del film.')
 }
 
-export default {getFilms}
+export  { getFilms }

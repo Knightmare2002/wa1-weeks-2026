@@ -46,7 +46,7 @@ function App(){
     const navigate = useNavigate()
 
     //===== STATES =====
-    const [films, setFilms] = useState(initialFilms)
+    const [films, setFilms] = useState([])
 
     const [showForm, setShowForm] = useState(false)
 
@@ -80,6 +80,8 @@ function App(){
     //===== CALLBACKS =====
     const handleLogin = (newUser) => {
       setUser({id: newUser.id, name: newUser.name})
+
+      navigate('/app')
     }
 
     const handleLogout = () => {

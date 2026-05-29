@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import { doLogin } from '../api/auth'
 
 function LoginPage(props) {
-  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +45,6 @@ function LoginPage(props) {
       return;
     }
 
-    // qui poi sostituiremo con la fetch al backend /api/sessions
     try {
       const user = await doLogin(email, password)
       props.onLogin(user)

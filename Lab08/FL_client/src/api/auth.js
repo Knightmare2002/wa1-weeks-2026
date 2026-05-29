@@ -4,7 +4,7 @@ async function doLogin(email, password){
     const response = await fetch(`${SERVER_URL}/api/sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: include,
+        credentials: 'include',
         body: JSON.stringify({email, password})
     })
 
