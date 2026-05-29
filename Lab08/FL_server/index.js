@@ -119,19 +119,19 @@ app.get(PREFIX, isLoggedIn, (req, res) => {
     const filter = req.query.filter
     const userID = req.user.id
 
-    if(filter == 'favorite'){
+    if(filter == 'favorites'){
         func.getFavoriteFilms(userID)
             .then(films => res.json(films))
             .catch(err => res.status(500).json(errorResponse(err)))
     }
 
-    else if (filter == 'bestRated'){
+    else if (filter == 'best-rated'){
         func.getBestRatedFilms(userID)
         .then(films => res.json(films))
         .catch(err => res.status(500).json(errorResponse(err)))
     }
 
-    else if (filter == 'lastMonth'){
+    else if (filter == 'seen-last-month'){
         const today = dayjs()
 
         func.getRecentlyWatchedFilms(today, userID)
@@ -139,7 +139,7 @@ app.get(PREFIX, isLoggedIn, (req, res) => {
         .catch(err => res.status(500).json(errorResponse(err)))
     }
 
-    else if (filter == 'Unseen'){
+    else if (filter == 'unseen'){
         func.getUnseenFilms(userID)
         .then(films => res.json(films))
         .catch(err => res.status(500).json(errorResponse(err)))
