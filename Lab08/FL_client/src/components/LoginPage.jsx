@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { doLogin } from '../api/auth'
 
-function LoginPage() {
+function LoginPage(props) {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -47,7 +47,15 @@ function LoginPage() {
     }
 
     // qui poi sostituiremo con la fetch al backend /api/sessions
-    navigate("/app");
+    try {
+      const user = await doLogin(email, password)
+      props.onLogin(user)
+    } catch (err) {
+      setErrors(prev => ({
+        ...prev,
+        form: 'Email o password non corretti'
+      }))
+    }
   };
 
   return (

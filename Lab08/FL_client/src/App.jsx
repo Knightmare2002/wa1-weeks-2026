@@ -1,6 +1,6 @@
 import { Film } from '../../FL_server/entities'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -12,7 +12,10 @@ import Sidebar from './components/Sidebar'
 import FilmTable from './components/FilmTable'
 import LoginPage from './components/LoginPage'
 import UserContext from './context/UserContext'
-import { Outlet, Route, Routes, useParams } from 'react-router-dom'
+import { Outlet, Route, Routes, useNavigate, useParams } from 'react-router-dom'
+
+import { checkSession } from './api/auth'
+import { getFilms } from './api/api'
 
 function getFilteredFilms(films, selectedFilter) {
   const today = dayjs()
@@ -40,6 +43,53 @@ function getFilteredFilms(films, selectedFilter) {
 }
 
 function App(){
+    const navigate = useNavigate()
+
+    //===== STATES =====
+    const [films, setFilms] = useState(initialFilms)
+
+    const [showForm, setShowForm] = useState(false)
+
+    const [filmToEdit, setEditingFilm] = useState(null)
+
+    const [user, setUser] = useState({id: undefined, name: undefined})
+
+    //===== EFFECTS ======
+
+    //Mounting
+    useEffect(() => {
+      checkSession().then(result => {
+        if(result){
+          setUser({
+            id: result.id,
+            name: result.name
+          })
+        }
+      })
+    }, [])
+
+    //Carica i film del server dopo l'autenticazione
+    useEffect(() => {
+      if (user.id) {
+        getFilms()
+          .then(filmList => setFilms(filmList))
+          .catch(err => console.error('Errore nel caricamento dei film:', err))
+      }
+    }, [user.id])
+
+    //===== CALLBACKS =====
+    const handleLogin = (newUser) => {
+      setUser({id: newUser.id, name: newUser.name})
+    }
+
+    const handleLogout = () => {
+      setUser({ id: undefined, name: undefined })
+      setFilms([])
+      navigate('/')
+    }
+
+    //===== HANDLERS =====
+
     const handleSaveFilm = (film) => {
 
       //EDIT
@@ -91,12 +141,7 @@ function App(){
       })
     };
 
-
-    const initialFilms = []
-    initialFilms.push(new Film(1, "Transformers", true, dayjs("11-10-2007", "DD-MM-YYYY"), 5, 1))
-    initialFilms.push(new Film(2, "Transformers 2", false, dayjs("11-10-2009", "DD-MM-YYYY"), 3, 1))
-    initialFilms.push(new Film(3, "Transformers 3", false, null, null, 1))
-
+    
     const filters = [
       {label: 'All', path: 'all'},
       {label: 'Favorites', path: 'favorites'},
@@ -104,27 +149,21 @@ function App(){
       {label: 'Seen Last Month', path: 'seen-last-month'},
       {label: 'Unseen', path: 'unseen'}
     ]
-    //const [selectedFilter, setSelectedFilter] = useState('All') Logica state-based
 
-    const [films, setFilms] = useState(initialFilms)
+    
 
-    //const visibleFilms = getFilteredFilms(films, selectedFilter) Logica state-based
-
-    const [showForm, setShowForm] = useState(false)
-
-    const [filmToEdit, setEditingFilm] = useState(null)
-
-    const user = {name: 'Guest'}
+    
     
     return (
       <UserContext.Provider value={user}>
         <Routes>
-          <Route path='/' element={<LoginPage />} />
+          <Route path='/' element={<LoginPage onLogin={handleLogin}/>} />
 
           <Route path='/app' element={<MainLayout filters={filters} />}>
             <Route
               index
               element={
+                user.id ?
                 <HomePage
                   visibleFilms={getFilteredFilms(films, 'all')}
                   setShowForm={setShowForm}
@@ -133,13 +172,14 @@ function App(){
                   handleDeleteFilm={handleDeleteFilm}
                   handleEditFilm={handleEditFilm}
                   filmToEdit={filmToEdit}
-                />
+                /> : <Navigate to='/'/>
               }
             />
 
             <Route
               path='filter/:filterName'
               element={
+                user.id ?
                 <FilterPage
                   films={films}
                   setShowForm={setShowForm}
@@ -148,7 +188,7 @@ function App(){
                   handleDeleteFilm={handleDeleteFilm}
                   handleEditFilm={handleEditFilm}
                   filmToEdit={filmToEdit}
-                />
+                /> : <Navigate to='/'/>
               }
             />
           </Route>
