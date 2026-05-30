@@ -36,4 +36,4 @@ async function checkSession(){
     return null
 }
 
-export default {doLogin, doLogout, checkSession}
+export {doLogin, doLogout, checkSession}

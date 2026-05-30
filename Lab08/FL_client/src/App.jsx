@@ -12,7 +12,7 @@ import Sidebar from './components/Sidebar'
 import FilmTable from './components/FilmTable'
 import LoginPage from './components/LoginPage'
 import UserContext from './context/UserContext'
-import { Outlet, Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { Outlet, Route, Routes, useNavigate, useParams, Navigate } from 'react-router-dom'
 
 import { checkSession } from './api/auth'
 import { getFilms } from './api/api'
